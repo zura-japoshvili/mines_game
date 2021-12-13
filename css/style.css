@@ -200,7 +200,7 @@ input::-webkit-inner-spin-button {
     border-radius: 8px;
     cursor: pointer;
 }
-.bombs-field{
+.mines-field{
     width: 440px;
     height: 440px;
     display: flex;
