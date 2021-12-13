@@ -201,6 +201,7 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 .mines-field{
+    position: relative;
     width: 440px;
     height: 440px;
     display: flex;
@@ -208,7 +209,23 @@ input::-webkit-inner-spin-button {
     align-content: space-between;
     flex-wrap: wrap;
 }
-.bomb-box{
+.star-progress{
+    position: absolute;
+    left: 0px;
+    top: -30px;
+    color: #ffffff;
+    display: none;
+}
+.next-win-amount{
+    position: absolute;
+    right: 0px;
+    top: -30px;
+    background-color: #4BC411;
+    padding: 3px 15px;
+    border-radius: 12px;
+    display: none;
+}
+.mines-box{
     width: 80px;
     height: 80px;
     background-color: #478ECA;
@@ -217,7 +234,7 @@ input::-webkit-inner-spin-button {
     justify-content: center;
     align-items: center;
 }
-.bomb-box .star-icon{
+.mines-box .star-icon{
     color: #ececec;
     font-size: 50px;
 }
