@@ -103,7 +103,7 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 .default-amount{
-    width: 100px;
+    width: 130px;
     height: 50px;
     display: flex;
     justify-content: space-between;
@@ -111,7 +111,7 @@ input::-webkit-inner-spin-button {
     flex-wrap: wrap;
 }
 .default-amount p{
-    width: 45px;
+    width: 60px;
     height: 20px;
     border-radius: 12px;
     border: 1px solid #ffffff;

@@ -1,7 +1,6 @@
 let minesField = document.querySelector('.mines-field'),
-    betBtn = document.querySelector('.bet-btn'),
-    amountInput = document.querySelector('.amount-input'),
-    minesInput = document.querySelector('.mines-input-value');
+    betBtn = document.querySelector('.bet-btn');
+
 
 
 let minesFieldBlocker;
@@ -19,48 +18,7 @@ let minesPos = [],
     usedMinesIndex = [];
 
 
-let amountMinus = document.querySelector('.amount-minus');
-let amountPlus = document.querySelector('.amount-plus');
-amountMinus.addEventListener("click", function(){
-    if(parseFloat(amountInput.value) > 0.1){
-        amountInput.value = (parseFloat(amountInput.value) - 0.1).toFixed(1);
-    }
-});
-amountPlus.addEventListener("click", function(){
-    if(parseFloat(amountInput.value) < 100){
-        amountInput.value = (parseFloat(amountInput.value) + 0.1).toFixed(1);
-    }
-});
-amountInput.onkeyup = () => {
-    if(parseFloat(amountInput.value) < 0.1){
-        amountInput.value = 0.1;
-    }
-    if(parseFloat(amountInput.value) > 100){
-        amountInput.value = 100;
-    }
-}
 
-let minesMinus = document.querySelector('.mines-minus').addEventListener('click', () =>{
-    if(parseInt(minesInput.value)  > 1){
-        minesInput.value = parseInt(minesInput.value) -1;
-    }
-});
-let minesPlus = document.querySelector('.mines-plus').addEventListener('click', () =>{
-    if(parseInt(minesInput.value) < 20){
-        minesInput.value = parseInt(minesInput.value) +1;
-    }
-});
-minesInput.onkeyup = () =>{
-    if(parseInt(minesInput.value) < 1){
-        minesInput.value = 1;
-    }
-    if(parseInt(minesInput.value) > 20){
-        minesInput.value = 20;
-    }
-    else{
-        minesInput.value = parseInt(Math.round(minesInput.value));
-    }   
-}
 
 
 function  generateRadnomMines(arg){
