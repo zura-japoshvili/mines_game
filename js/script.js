@@ -1,5 +1,6 @@
 let minesField = document.querySelector('.mines-field'),
-    betBtn = document.querySelector('.bet-btn');
+    betBtn = document.querySelector('.bet-btn'),
+    numberOfMines = minesInput = document.querySelector('.mines-input-value');
 
 
 
@@ -10,7 +11,6 @@ betBtn.addEventListener('click', function(){
 
 const MAX_MINES = 25;
 let gameActive = true,
-    numberOfMines = 5,
     currrentIndex = 1;
 
 
@@ -21,8 +21,10 @@ let usedMinesIndex = [];
 
 
 
-function  generateRadnomMines(arg){
-    for(let i = 0;i <arg; i++){
+function  generateRadnomMines(){
+    numberOfMines = parseInt(numberOfMines.value);
+
+    for(let i = 0;i <numberOfMines; i++){
         const random = Math.floor(Math.random() * MAX_MINES);
         if(minesPos.includes(random)){
             i--;
@@ -33,18 +35,35 @@ function  generateRadnomMines(arg){
     }
 }
 function checkMines(index){
+    let cardImg = document.querySelectorAll('.card-back img');
+    let cardBack = document.querySelectorAll('.card-back');
 
     minesBox[index].style.transform = "rotateY(180deg)";
 
-    // if(minesPos.includes(index)){
-    //     gameActive = false;
-    //     alert('You Loose Game');
-    //     return;
-    // }else{
-
-    // }
-
-
+    if(minesPos.includes(index)){
+        gameActive = false;
+        cardBack[index].style.cssText = 'background-color: #E27C9E;';
+        cardImg[index].src = 'images/boom.svg';
+        console.log(usedMinesIndex);
+        for(let i = 0;i<minesBox.length; i++){
+            if(usedMinesIndex[i] === 0){
+                minesBox[i].style.transform = "rotateY(180deg)";
+                if(minesPos.includes(i)){
+                    cardBack[i].style.cssText = 'background-color: #fff;';
+                    cardImg[i].src = 'images/mine.svg'
+                }else{
+                    cardBack[i].style.cssText = 'background-color: #F69F11;';
+                    cardImg[i].src = 'images/star.svg';
+                }
+            }
+        }
+        return;
+    }else{
+        cardBack[index].style.cssText = 'background-color: #F69F11;';
+        setTimeout((() => {
+            cardImg[index].src = 'images/star.svg';
+        }),100);    
+    }
 }
 function clickMinesHandler(clickedEvent){
     const clickedMines = clickedEvent.currentTarget;
@@ -68,14 +87,16 @@ function generateMineBtns(){
     for(let i = 0;i < MAX_MINES;i++){
     content += `<div  minesIndex="${i}" class="mines-box">
                     <div class="card-front"></div>
-                    <div class="card-back"></div>
+                    <div class="card-back">
+                        <img> 
+                    </div>
                 </div>`;
 
         usedMinesIndex.push(0);
     }
     minesField.innerHTML = content;
     minesFieldBlocker = document.querySelector('.mines-field-blocker');
-    generateRadnomMines(numberOfMines);
+    generateRadnomMines();
 }
 
 
