@@ -14,8 +14,8 @@ let gameActive = true,
     currrentIndex = 1;
 
 
-let minesPos = [],
-    usedMinesIndex = [];
+let minesPos = [];
+let usedMinesIndex = [];
 
 
 
@@ -33,19 +33,23 @@ function  generateRadnomMines(arg){
     }
 }
 function checkMines(index){
-    if(minesPos.includes(index)){
-        gameActive = false;
-        alert('You Loose Game');
-        return;
-    }else{
 
-    }
+    minesBox[index].style.transform = "rotateY(180deg)";
+
+    // if(minesPos.includes(index)){
+    //     gameActive = false;
+    //     alert('You Loose Game');
+    //     return;
+    // }else{
+
+    // }
+
+
 }
 function clickMinesHandler(clickedEvent){
-    
-    const clickedMines = clickedEvent.target;
+    const clickedMines = clickedEvent.currentTarget;
     const clickedMinesIndex = parseInt(clickedMines.getAttribute('minesIndex'));
-    
+
     if(usedMinesIndex[clickedMinesIndex] !== 0 || gameActive !== true){
         return;
     }else{
@@ -57,11 +61,15 @@ function clickMinesHandler(clickedEvent){
 }
 
 function generateMineBtns(){
-    let content = `<div class="mines-field-blocker"></div>
+    // <div class="mines-field-blocker"></div>
+    let content = `
     <p class="star-progress">Stars opened: <span class="current-index">0</span>/<span class="last-index">${MAX_MINES-numberOfMines}</span></p>
     <p class="next-win-amount">Next tile: <span class="next-amount">${1}</span>$</p>`;
     for(let i = 0;i < MAX_MINES;i++){
-        content += `<div class="mines-box" minesIndex="${i}"></div>`;
+    content += `<div  minesIndex="${i}" class="mines-box">
+                    <div class="card-front"></div>
+                    <div class="card-back"></div>
+                </div>`;
 
         usedMinesIndex.push(0);
     }
