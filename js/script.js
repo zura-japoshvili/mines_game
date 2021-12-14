@@ -2,26 +2,21 @@ let minesField = document.querySelector('.mines-field'),
     betBtn = document.querySelector('.bet-btn'),
     numberOfMines = minesInput = document.querySelector('.mines-input-value');
 
-
-
-let minesFieldBlocker;
-betBtn.addEventListener('click', function(){
-    minesFieldBlocker.style.display = 'none';
-});
-
 const MAX_MINES = 25;
 let gameActive = true,
-    currrentIndex = 1;
-
+    currrentIndex = 0,
+    lastIndex,
+    minesFieldBlocker,
+    starProgress,
+    nextWinAmount,
+    nextAmount;
 
 let minesPos = [];
 let usedMinesIndex = [];
 
 
 
-
-
-function  generateRadnomMines(){
+function  generateRandomMines(){
     numberOfMines = parseInt(numberOfMines.value);
 
     for(let i = 0;i <numberOfMines; i++){
@@ -60,9 +55,7 @@ function checkMines(index){
         return;
     }else{
         cardBack[index].style.cssText = 'background-color: #F69F11;';
-        setTimeout((() => {
-            cardImg[index].src = 'images/star.svg';
-        }),100);    
+        cardImg[index].src = 'images/star.svg';  
     }
 }
 function clickMinesHandler(clickedEvent){
@@ -80,25 +73,34 @@ function clickMinesHandler(clickedEvent){
 }
 
 function generateMineBtns(){
-    // <div class="mines-field-blocker"></div>
     let content = `
     <p class="star-progress">Stars opened: <span class="current-index">0</span>/<span class="last-index">${MAX_MINES-numberOfMines}</span></p>
     <p class="next-win-amount">Next tile: <span class="next-amount">${1}</span>$</p>`;
     for(let i = 0;i < MAX_MINES;i++){
-    content += `<div  minesIndex="${i}" class="mines-box">
-                    <div class="card-front"></div>
+    content += `<button  minesIndex="${i}" class="mines-box" disabled>
+                    <div class="card-front">
+                        <img src="images/dots.svg"> 
+                    </div>
                     <div class="card-back">
                         <img> 
                     </div>
-                </div>`;
+                </button>`;
 
         usedMinesIndex.push(0);
     }
     minesField.innerHTML = content;
     minesFieldBlocker = document.querySelector('.mines-field-blocker');
-    generateRadnomMines();
 }
 
+betBtn.addEventListener('click', () =>{
+    let frontCard = document.querySelectorAll('.card-front');
+    frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
+
+    for(let index in minesBox){
+        minesBox[index].disabled = false;
+    }
+    generateRandomMines();
+});
 
 window.addEventListener('onload', generateMineBtns());
 
