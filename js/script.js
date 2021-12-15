@@ -1,9 +1,11 @@
 let minesField = document.querySelector('.mines-field'),
     betBtn = document.querySelector('.bet-btn'),
-    numberOfMines = minesInput = document.querySelector('.mines-input-value');
+    numberOfMines = document.querySelector('.mines-input-value'),
+    randomBtn = document.querySelector('.random-btn'),
+    currentAmount = parseFloat(document.querySelector(".amount-input").value);
 
 const MAX_MINES = 25;
-let gameActive = true,
+let gameActive = false,
     currrentIndex = 0,
     lastIndex,
     minesFieldBlocker,
@@ -14,12 +16,19 @@ let gameActive = true,
 let minesPos = [];
 let usedMinesIndex = [];
 
+const flipAudio = new Audio('audio/flip.wav');
+const loseAudio = new Audio('audio/lose.wav');
+const winAudio = new Audio('audio/win.wav');
+
+function makeSound(audio) {
+    audio.currentTime = 0;
+    audio.play();
+}
 
 
-function  generateRandomMines(){
-    numberOfMines = parseInt(numberOfMines.value);
 
-    for(let i = 0;i <numberOfMines; i++){
+function  generateRandomMines(value){
+    for(let i = 0;i <value; i++){
         const random = Math.floor(Math.random() * MAX_MINES);
         if(minesPos.includes(random)){
             i--;
@@ -36,10 +45,10 @@ function checkMines(index){
     minesBox[index].style.transform = "rotateY(180deg)";
 
     if(minesPos.includes(index)){
+        makeSound(loseAudio);
         gameActive = false;
         cardBack[index].style.cssText = 'background-color: #E27C9E;';
         cardImg[index].src = 'images/boom.svg';
-        console.log(usedMinesIndex);
         for(let i = 0;i<minesBox.length; i++){
             if(usedMinesIndex[i] === 0){
                 minesBox[i].style.transform = "rotateY(180deg)";
@@ -54,17 +63,20 @@ function checkMines(index){
         }
         return;
     }else{
+        makeSound(flipAudio);
         cardBack[index].style.cssText = 'background-color: #F69F11;';
         cardImg[index].src = 'images/star.svg';  
     }
 }
 function clickMinesHandler(clickedEvent){
+    betBtn.style.backgroundColor = '#FA911B';
     const clickedMines = clickedEvent.currentTarget;
     const clickedMinesIndex = parseInt(clickedMines.getAttribute('minesIndex'));
 
     if(usedMinesIndex[clickedMinesIndex] !== 0 || gameActive !== true){
         return;
     }else{
+        betBtn.textContent = `CASHOUT ${currentAmount}$`;
         usedMinesIndex[clickedMinesIndex] = 1;
         checkMines(clickedMinesIndex);
     }
@@ -93,13 +105,24 @@ function generateMineBtns(){
 }
 
 betBtn.addEventListener('click', () =>{
-    let frontCard = document.querySelectorAll('.card-front');
-    frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
-
-    for(let index in minesBox){
-        minesBox[index].disabled = false;
+    if(gameActive === false){
+        makeSound(flipAudio);
+        randomBtn.disabled = false;
+        randomBtn.style.cssText = "color: #fff";
+        betBtn.textContent = 'CASHOUT';
+        betBtn.style.backgroundColor = '#7D7767';
+    
+        let frontCard = document.querySelectorAll('.card-front');
+        frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
+        for(let index in minesBox){
+            minesBox[index].disabled = false;
+        }
+        gameActive = true;
+        generateRandomMines(parseInt(numberOfMines.value));
+    }else{
+        
     }
-    generateRandomMines();
+
 });
 
 window.addEventListener('onload', generateMineBtns());
