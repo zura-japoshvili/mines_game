@@ -18,6 +18,7 @@ input::-webkit-inner-spin-button {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    padding: 20px;
 }
 .control-space{
     width: 280px;
@@ -261,4 +262,23 @@ input::-webkit-inner-spin-button {
 .mines-box div img{
     width: 50px;
     height: 50px;
+}
+
+@media screen and (max-width: 800px) {
+    .content{
+        flex-direction: column;
+    }
+    .mines-field{
+        width: 300px;
+        height: 300px;
+        margin-top: 30px;
+    }
+    .mines-field .mines-box{
+        width: 54px;
+        height: 54px;
+    }
+    .mines-field .mines-box div img{
+        width: 35px;
+        height: 35px;
+    }
 }

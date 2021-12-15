@@ -12,8 +12,7 @@ let gameActive = true,
     minesFieldBlocker,
     starProgress,
     nextWinAmount,
-    nextAmount,
-    minesBox;
+    nextAmount;
 
 let minesPos = [];
 let usedMinesIndex = [];
@@ -21,9 +20,6 @@ let usedMinesIndex = [];
 const flipAudio = new Audio('audio/flip.wav');
 const loseAudio = new Audio('audio/lose.wav');
 const winAudio = new Audio('audio/win.wav');
-
-
-
 
 function makeSound(audio) {
     audio.currentTime = 0;
@@ -37,6 +33,7 @@ function restartGame(){
     usedMinesIndex = [];
     gameActive = true;
     betClicked = false;
+    counter++;
     generateMineBtns();
 }
 
@@ -123,11 +120,11 @@ function generateMineBtns(){
     minesField.innerHTML = content;
     minesFieldBlocker = document.querySelector('.mines-field-blocker');
     minesBox = document.querySelectorAll(".mines-box");
+    minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
 }
 
 betBtn.addEventListener('click', () =>{
     if(!betClicked){
-        console.log(minesBox[0]);
         makeSound(flipAudio);
         randomBtn.disabled = false;
         randomBtn.style.cssText = "color: #fff";
@@ -157,5 +154,3 @@ betBtn.addEventListener('click', () =>{
 
 window.addEventListener('onload', generateMineBtns());
 
-
-minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
