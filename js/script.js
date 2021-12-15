@@ -11,7 +11,8 @@ let gameActive = true,
     minesFieldBlocker,
     starProgress,
     nextWinAmount,
-    nextAmount;
+    nextAmount,
+    minesBox;
 
 let minesPos = [];
 let usedMinesIndex = [];
@@ -27,7 +28,6 @@ function makeSound(audio) {
 
 
 function restartGame(){
-    randomBtn.disabled = true;
     minesPos = [];
     usedMinesIndex = [];
     gameActive = true;
@@ -46,17 +46,40 @@ function  generateRandomMines(value){
         }
     }
 }
+
+function randomClick(){
+    let randomPos
+    while(true){     
+        randomPos = Math.floor(Math.random() * MAX_MINES + 1);
+        if(usedMinesIndex[randomPos] == 0){
+            break;    
+        }
+    }
+    return randomPos;
+}
+
 function checkMines(index){
+    let currentAmount = parseFloat(document.querySelector(".amount-input").value);
+    betBtn.style.backgroundColor = '#FA911B';
+    betBtn.textContent = `CASHOUT ${currentAmount}$`;
+    betClicked = true;
+
     let cardImg = document.querySelectorAll('.card-back img');
     let cardBack = document.querySelectorAll('.card-back');
-
+    
+    console.log(index);
     minesBox[index].style.transform = "rotateY(180deg)";
 
     if(minesPos.includes(index)){
         makeSound(loseAudio);
-        gameActive = false;
+
         cardBack[index].style.cssText = 'background-color: #E27C9E;';
         cardImg[index].src = 'images/boom.svg';
+
+        gameActive = false;
+        betClicked = true;
+        randomBtn.disabled = true;
+
         randomBtn.style.cssText = "color: #7FAFD9";
         betBtn.textContent = 'BET';
         betBtn.style.backgroundColor = '#7AC80D';
@@ -83,20 +106,16 @@ function checkMines(index){
 function clickMinesHandler(clickedEvent){
     let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
+
     const clickedMines = clickedEvent.currentTarget;
     const clickedMinesIndex = parseInt(clickedMines.getAttribute('minesIndex'));
 
     if(usedMinesIndex[clickedMinesIndex] !== 0 || gameActive !== true){
-        console.log(1);
         return;
     }else{
-        betClicked = true;
-        betBtn.textContent = `CASHOUT ${currentAmount}$`;
         usedMinesIndex[clickedMinesIndex] = 1;
         checkMines(clickedMinesIndex);
-    }
-    
-    
+    }  
 }
 
 function generateMineBtns(){
@@ -150,6 +169,25 @@ betBtn.addEventListener('click', () =>{
     }
 
 });
+
+randomBtn.addEventListener('click', () =>{
+    makeSound(flipAudio);
+    randomBtn.disabled = false;
+    randomBtn.style.cssText = "color: #fff";
+    betBtn.textContent = 'CASHOUT';
+    betBtn.style.backgroundColor = '#7D7767';
+
+    let frontCard = document.querySelectorAll('.card-front');
+    frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
+    for(let index in minesBox){
+        minesBox[index].disabled = false;
+    }
+  
+    let randomNum = randomClick();
+    usedMinesIndex[randomNum] = 1;
+
+    checkMines(randomNum);
+})
 
 window.addEventListener('onload', generateMineBtns());
 
