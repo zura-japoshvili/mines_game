@@ -1,8 +1,7 @@
 let minesField = document.querySelector('.mines-field'),
     betBtn = document.querySelector('.bet-btn'),
     numberOfMines = document.querySelector('.mines-input-value'),
-    randomBtn = document.querySelector('.random-btn'),
-    currentAmount = parseFloat(document.querySelector(".amount-input").value);
+    randomBtn = document.querySelector('.random-btn');
 
 const MAX_MINES = 25;
 let gameActive = true,
@@ -33,7 +32,6 @@ function restartGame(){
     usedMinesIndex = [];
     gameActive = true;
     betClicked = false;
-    counter++;
     generateMineBtns();
 }
 
@@ -83,10 +81,11 @@ function checkMines(index){
     }
 }
 function clickMinesHandler(clickedEvent){
+    let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
     const clickedMines = clickedEvent.currentTarget;
     const clickedMinesIndex = parseInt(clickedMines.getAttribute('minesIndex'));
-    console.log(123);
+
     if(usedMinesIndex[clickedMinesIndex] !== 0 || gameActive !== true){
         console.log(1);
         return;
