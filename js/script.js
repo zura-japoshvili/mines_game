@@ -155,6 +155,7 @@ betBtn.addEventListener('click', () =>{
             minesBox[index].disabled = false;
         }
         generateRandomMines(parseInt(numberOfMines.value));
+        console.log(minesPos);
     }else{
         if(!gameActive){
             restartGame();
