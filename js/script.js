@@ -1,14 +1,20 @@
+import controlContent  from './control.js';
+
 let minesField = document.querySelector('.mines-field'),
-    betBtn = document.querySelector('.bet-btn'),
-    numberOfMines = document.querySelector('.mines-input-value'),
-    randomBtn = document.querySelector('.random-btn');
+    betBtn,
+    numberOfMines,
+    randomBtn,
+    controlSpace = document.querySelector('.control-space');
+
+let controlManual,
+    controlAuto;
 
 const MAX_MINES = 25;
-let gameActive = true,
+let gameMode = 'manual',
+    gameActive = false,
     betClicked = false,
     currrentIndex = 0,
     lastIndex,
-    minesFieldBlocker,
     starProgress,
     nextWinAmount,
     nextAmount,
@@ -17,20 +23,41 @@ let gameActive = true,
 let minesPos = [];
 let usedMinesIndex = [];
 
+window.addEventListener('onload', gameModeFunc());
+
 const flipAudio = new Audio('audio/flip.wav');
 const loseAudio = new Audio('audio/lose.wav');
 const winAudio = new Audio('audio/win.wav');
+
 
 function makeSound(audio) {
     audio.currentTime = 0;
     audio.play();
 }
 
+function makeDisabled(){
+    if(gameActive === true){
+        controlManual.disabled = true;
+        controlAuto.disabled = true;
+
+        randomBtn.disabled = false;
+        randomBtn.style.cssText = "color: #fff";
+        betBtn.textContent = 'CASHOUT';
+        betBtn.style.backgroundColor = '#7D7767';
+    
+        let frontCard = document.querySelectorAll('.card-front');
+
+        frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
+        minesBox.forEach(index => index.disabled = false);
+    }else{
+        controlManual.disabled = false;
+        controlAuto.disabled = false;
+    }
+}
 
 function restartGame(){
     minesPos = [];
     usedMinesIndex = [];
-    gameActive = true;
     betClicked = false;
     generateMineBtns();
 }
@@ -136,7 +163,6 @@ function generateMineBtns(){
     }
     
     minesField.innerHTML = content;
-    minesFieldBlocker = document.querySelector('.mines-field-blocker');
     minesBox = document.querySelectorAll(".mines-box");
     minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
 }
@@ -144,20 +170,13 @@ function generateMineBtns(){
 betBtn.addEventListener('click', () =>{
     if(!betClicked){
         makeSound(flipAudio);
-        randomBtn.disabled = false;
-        randomBtn.style.cssText = "color: #fff";
-        betBtn.textContent = 'CASHOUT';
-        betBtn.style.backgroundColor = '#7D7767';
-    
-        let frontCard = document.querySelectorAll('.card-front');
-        frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
-        for(let index in minesBox){
-            minesBox[index].disabled = false;
-        }
+        gameActive = true;
+
+        makeDisabled();
         generateRandomMines(parseInt(numberOfMines.value));
-        console.log(minesPos);
     }else{
         if(!gameActive){
+            makeDisabled();
             restartGame();
         }else{
             makeSound(winAudio);
@@ -165,6 +184,7 @@ betBtn.addEventListener('click', () =>{
             betBtn.textContent = 'BET';
             betBtn.style.backgroundColor = '#7AC80D';
 
+            makeDisabled();
             restartGame();
         }
     }
@@ -173,22 +193,41 @@ betBtn.addEventListener('click', () =>{
 
 randomBtn.addEventListener('click', () =>{
     makeSound(flipAudio);
-    randomBtn.disabled = false;
-    randomBtn.style.cssText = "color: #fff";
-    betBtn.textContent = 'CASHOUT';
-    betBtn.style.backgroundColor = '#7D7767';
 
-    let frontCard = document.querySelectorAll('.card-front');
-    frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
-    for(let index in minesBox){
-        minesBox[index].disabled = false;
-    }
-  
     let randomNum = randomClick();
     usedMinesIndex[randomNum] = 1;
 
     checkMines(randomNum);
 })
 
-window.addEventListener('onload', generateMineBtns());
+
+function gameModeFunc(){
+    if(gameMode === 'manual'){
+        controlSpace.innerHTML = controlContent.manualContent;
+        betBtn = document.querySelector('.bet-btn');
+        randomBtn = document.querySelector('.random-btn')
+        generateMineBtns()
+    }else{
+        controlSpace.innerHTML = controlContent.autoContent;
+        generateMineBtns()
+    }
+
+    numberOfMines = document.querySelector('.mines-input-value')
+    controlManual = document.querySelector('.control-manual'),
+    controlAuto = document.querySelector('.control-auto');
+
+
+    controlManual.addEventListener('click', () => {
+        gameMode = 'manual'; 
+        gameModeFunc()
+    });
+    controlAuto.addEventListener('click', () => {
+        gameMode = 'auto'; 
+        gameModeFunc();
+    });
+    
+}
+
+
+
 

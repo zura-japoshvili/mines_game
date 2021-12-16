@@ -35,7 +35,7 @@ input::-webkit-inner-spin-button {
     border-radius: 10px;
     border: 2px solid #00427D;
 }
-.control-space .control-switch p{
+.control-space .control-switch button{
     width: 50%;
     height: 33px;
     display: flex;
@@ -46,8 +46,10 @@ input::-webkit-inner-spin-button {
     font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
+    background-color: rgba(240, 255, 255, 0);
+    border: none;
 }
-.control-space .control-switch .active{
+.control-space .control-switch .mode-active{
     background-color: #053E75;
 }
 .control-space .amount-content{
