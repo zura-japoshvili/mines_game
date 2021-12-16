@@ -28,13 +28,15 @@ const MAX_MINES = 25;
 let gameMode = 'manual',
     gameActive = false,
     betClicked = false,
-    currrentIndex = 0,
+    minesBox;
+// These variables are used for game progress    
+let currrentIndex = 0,
     lastIndex,
     starProgress,
     nextWinAmount,
-    nextAmount,
-    minesBox;
+    nextAmount;
 
+// In these arrays we store the positions of clicked buttons and mines
 let minesPos = [];
 let usedMinesIndex = [];
 
