@@ -1,11 +1,26 @@
 import controlContent  from './control.js';
 
-let minesField = document.querySelector('.mines-field'),
-    betBtn,
-    numberOfMines,
-    randomBtn,
-    controlSpace = document.querySelector('.control-space');
+// These variables are used for auto game mode.
+let winReturn = document.querySelector('.on-win div .btn-return'),
+    winInc = document.querySelector('.on-win div .btn-inc'),
+    winDec = document.querySelector('.on-win div .btn-dec'),
+    lossReturn = document.querySelector('.on-loss div .btn-return'),
+    lossInc = document.querySelector('.on-loss div .btn-inc'),
+    lossDec = document.querySelector('.on-loss div .btn-dec'),
+    autoRand = document.querySelector('.auto-rand'),
+    autoClear = document.querySelector('.auto-clear'),
+    startBtn = document.querySelector('.start-btn');
 
+
+
+let controlSpace = document.querySelector('.control-space');
+let minesField = document.querySelector('.mines-field'),
+    numberOfMines;
+    
+// These variables are used for manual game mode.
+let betBtn,
+    randomBtn;
+// Variables where game mode selection buttons are stored
 let controlManual,
     controlAuto;
 
@@ -29,12 +44,13 @@ const flipAudio = new Audio('audio/flip.wav');
 const loseAudio = new Audio('audio/lose.wav');
 const winAudio = new Audio('audio/win.wav');
 
-
+// Used to sound the game with each click
 function makeSound(audio) {
     audio.currentTime = 0;
     audio.play();
 }
 
+// This feature restricts buttons that may interfere with the gameplay
 function makeDisabled(){
     if(gameActive === true){
         controlManual.disabled = true;
@@ -62,6 +78,7 @@ function restartGame(){
     generateMineBtns();
 }
 
+// This function adds random numbers to the array("minesPos") used to position the mine
 function  generateRandomMines(value){
     for(let i = 0;i <value; i++){
         const random = Math.floor(Math.random() * MAX_MINES);
@@ -74,6 +91,8 @@ function  generateRandomMines(value){
     }
 }
 
+// This function is triggered when we press the random button. 
+// Its purpose is to return a digit that is not used for mine positioning
 function randomClick(){
     let randomPos
     while(true){     
@@ -84,7 +103,9 @@ function randomClick(){
     }
     return randomPos;
 }
-
+// This function checks whether there is a mine on the clicked "minesBox"
+// It also adds pictures, rotates the container and makes a sound, 
+// it all depends on whether the given position is mine.
 function checkMines(index){
     let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
@@ -130,6 +151,7 @@ function checkMines(index){
         cardImg[index].src = 'images/star.svg';  
     }
 }
+
 function clickMinesHandler(clickedEvent){
     let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
@@ -145,6 +167,8 @@ function clickMinesHandler(clickedEvent){
     }  
 }
 
+// This function generates mine buttons and also adds zeros to the array ("usedMinesIndex") 
+// to indicate that the position is not occupied.
 function generateMineBtns(){
     let content = `
     <p class="star-progress">Stars opened: <span class="current-index">0</span>/<span class="last-index">${MAX_MINES-numberOfMines}</span></p>
@@ -162,6 +186,7 @@ function generateMineBtns(){
         usedMinesIndex.push(0);
     }
     
+    // 
     minesField.innerHTML = content;
     minesBox = document.querySelectorAll(".mines-box");
     minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
@@ -201,6 +226,7 @@ randomBtn.addEventListener('click', () =>{
 })
 
 
+// This function selects which game mode to run (depending on the "gameMode" variable)
 function gameModeFunc(){
     if(gameMode === 'manual'){
         controlSpace.innerHTML = controlContent.manualContent;

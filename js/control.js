@@ -36,15 +36,15 @@ const autoContent = `<div class="control-switch">
 <div class="auto-cont on-win">
 <h4>On Win</h4>
 <div>
-    <button>
+    <button class="btn-return">
         <p>Return to base</p>
     </button>
-    <button>
+    <button class="btn-inc">
         <label>Increase</label><br>
         <input type="text" value="100">
         <label>%</label>
     </button>
-    <button>
+    <button class="btn-dec">
         <label>Decrease</label><br>
         <input type="text" value="50">
         <label>%</label>
@@ -54,15 +54,15 @@ const autoContent = `<div class="control-switch">
 <div class="auto-cont on-loss">
 <h4>On Loss</h4>
 <div>
-    <button>
+    <button class="btn-return">
         <p>Return to base</p>
     </button>
-    <button>
+    <button class="btn-inc">
         <label>Increase</label><br>
         <input type="text" value="100">
         <label>%</label>
     </button>
-    <button>
+    <button class="btn-dec">
         <label>Decrease</label><br>
         <input type="text" value="50">
         <label>%</label>
@@ -71,8 +71,8 @@ const autoContent = `<div class="control-switch">
 </div>
 <h4>Select tiles and press Start</h4>
 <div class="buttons-duo">
-<button>RANDOM</button>
-<button>CLEAR</button>
+<button class="auto-rand">RANDOM</button>
+<button class="auto-clear">CLEAR</button>
 </div>
 <button class="start-btn">START</button>`;
 
