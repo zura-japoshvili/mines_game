@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines</title>
+    <!-- This for fix Error  "favicon.ico:1 GET http://127.0.0.1:5500/favicon.ico 404 (Not Found)" -->
+    <link rel="shortcut icon" href="#">
     <!-- FontAwesome Link-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <!-- -->
+    <!-- CSS Link -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="content">
         <div class="control-space">
             <div class="control-switch">
-                <p class="control-manual mode-active">Manual</p>
-                <p class="control-auto">Auto</p>
+                <button class="control-manual mode-active">Manual</button>
+                <button class="control-auto">Auto</button>
             </div>
             <div class="amount-content">
                 <div class="amount-input-box">
@@ -47,13 +49,18 @@
                 <p class="default-mines" def_mine="9">9</p>
                 <p class="default-mines" def_mine="15">15</p>
             </div>
-            <button class="bet-btn">BET</button>
-            <button class="random-btn" disabled>OPEN RANDOMLY</button>
+            <div class="control-insert">
+                <button class="bet-btn">BET</button>
+                <button class="random-btn" disabled>OPEN RANDOMLY</button>
+            </div>
         </div>
         <div class="mines-field">
         </div>
     </div>
+    <!-- Js Links -->
     <script src="js/script.js" type="module"></script>
+    <script src="js/manual.js" type="module"></script>
+    <script src="js/auto.js" type="module"></script>
     <script src="js/input_validate.js"></script>
 </body>
 </html>
