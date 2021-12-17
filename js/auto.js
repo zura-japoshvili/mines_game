@@ -130,7 +130,7 @@ function generateMineBtns(){
 function clickedStart(){
     let cardImg = document.querySelectorAll('.card-back img');
     let cardBack = document.querySelectorAll('.card-back');
-    if(markedIndex){
+    if(markedIndex && startBtn.textContent == 'START'){
         minesBox[markedIndex].style.transform = "rotateY(180deg)";
         if(minesPos.includes(markedIndex)){
             makeSound(loseAudio);
@@ -144,6 +144,9 @@ function clickedStart(){
         }
         startBtn.style.backgroundColor = '#C70C2A';
         startBtn.textContent = 'STOP';
+    }
+    if(startBtn.textContent == 'STOP'){
+        
     }
 } 
 function onWinPlan(value){
