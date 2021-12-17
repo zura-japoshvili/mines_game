@@ -10,7 +10,6 @@ let betBtn,
 const MAX_MINES = 25;
 let gameActive = false,
     betClicked = false,
-    isMinesExists = false,
     minesBox;
 
 setInterval((() =>{
@@ -19,7 +18,7 @@ setInterval((() =>{
         betBtn.addEventListener('click', betFunc);
         randomBtn = document.querySelector('.random-btn');
         randomBtn.addEventListener('click', randomClickFunc);
-        if(!isMinesExists){
+        if(minesField.innerHTML == ''){
             generateMineBtns();
         }
     }
@@ -108,7 +107,6 @@ function randomClick(){
 // This function generates mine buttons and also adds zeros to the array ("usedMinesIndex") 
 // to indicate that the position is not occupied.
 function generateMineBtns(){
-    isMinesExists = true;
     let content = `
     <p class="star-progress">Stars opened: <span class="current-index">0</span>/<span class="last-index">${MAX_MINES-numberOfMines}</span></p>
     <p class="next-win-amount">Next tile: <span class="next-amount">${1}</span>$</p>`;

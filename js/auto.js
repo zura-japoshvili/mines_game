@@ -56,7 +56,8 @@ setInterval((() =>{
         startBtn = document.querySelector('.start-btn');
         startBtn.onclick = clickedStart;
 
-        if(!isMinesExists){
+        if(minesField.innerHTML == ''){
+            markedIndex = '';
             generateMineBtns();
         }
     }
@@ -90,14 +91,17 @@ function markedHandler(clickedEvent){
     const markedMineIndex = parseInt(markedMine.getAttribute('minesIndex'));
     generateRandomMines(parseInt(numberOfMines.value));
     if(!markedIndex){
+
         markedIndex = markedMineIndex;
+        let cardFront = document.querySelectorAll('.card-front');
+        cardFront[markedIndex].style.cssText = "background-color: #3ABF17;";
+
     }
 }
 
 // This function generates mine buttons and also adds zeros to the array ("usedMinesIndex") 
 // to indicate that the position is not occupied.
 function generateMineBtns(){
-    isMinesExists = true;
     let content = `
     <p class="star-progress">Stars opened: <span class="current-index">0</span>/<span class="last-index">${MAX_MINES-numberOfMines}</span></p>
     <p class="next-win-amount">Next tile: <span class="next-amount">${1}</span>$</p>`;
@@ -115,19 +119,36 @@ function generateMineBtns(){
     // 
     minesField.innerHTML = content;
     minesBox = document.querySelectorAll(".mines-box");
-    minesBox.forEach(value => value.addEventListener('click',markedHandler));
-    let frontCard = document.querySelectorAll('.card-front');
 
+    let frontCard = document.querySelectorAll('.card-front');
     frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
+
+    minesBox.forEach(value => value.addEventListener('click',markedHandler));
     minesBox.forEach(index => index.disabled = false);
 }
 
 function clickedStart(){
-    console.log(1111);
+    let cardImg = document.querySelectorAll('.card-back img');
+    let cardBack = document.querySelectorAll('.card-back');
+    if(markedIndex){
+        minesBox[markedIndex].style.transform = "rotateY(180deg)";
+        if(minesPos.includes(markedIndex)){
+            makeSound(loseAudio);
+    
+            cardBack[markedIndex].style.cssText = 'background-color: #E27C9E;';
+            cardImg[markedIndex].src = 'images/boom.svg';
+        }else{
+            makeSound(winAudio);
+            cardBack[markedIndex].style.cssText = 'background-color: #F69F11;';
+            cardImg[markedIndex].src = 'images/star.svg';  
+        }
+        startBtn.style.backgroundColor = '#C70C2A';
+        startBtn.textContent = 'STOP';
+    }
 } 
 function onWinPlan(value){
-
+    onWinVar = value;
 }
 function onLossPlan(value){
-    
+    onLossVar = value;
 }
