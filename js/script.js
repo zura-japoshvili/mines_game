@@ -1,24 +1,7 @@
 import controlContent  from './control.js';
 
-// These variables are used for auto game mode.
-let winReturn,
-    winInc,
-    winDec,
-    lossReturn,
-    lossInc,
-    lossDec,
-    autoRand,
-    autoClear,
-    startBtn;
-winReturn = document.querySelector('.on-win div .btn-return'),
-winInc = document.querySelector('.on-win div .btn-inc'),
-winDec = document.querySelector('.on-win div .btn-dec'),
-lossReturn = document.querySelector('.on-loss div .btn-return'),
-lossInc = document.querySelector('.on-loss div .btn-inc'),
-lossDec = document.querySelector('.on-loss div .btn-dec'),
-autoRand = document.querySelector('.auto-rand'),
-autoClear = document.querySelector('.auto-clear'),
-startBtn = document.querySelector('.start-btn');
+
+
 
 let gameMode = 'manual';
 
@@ -40,23 +23,9 @@ let currrentIndex = 0,
     nextWinAmount,
     nextAmount;
 
-// In these arrays we store the positions of clicked buttons and mines
-let minesPos = [];
-let usedMinesIndex = [];
-
-let markedIndex = '';
-
 window.addEventListener('onload', gameModeFunc());
 
-const flipAudio = new Audio('audio/flip.wav');
-const loseAudio = new Audio('audio/lose.wav');
-const winAudio = new Audio('audio/win.wav');
 
-// Used to sound the game with each click
-function makeSound(audio) {
-    audio.currentTime = 0;
-    audio.play();
-}
 
 // This feature restricts buttons that may interfere with the gameplay
 function makeDisabled(){
@@ -145,21 +114,7 @@ function makeDisabled(){
 
 
 
-function ifMineBoxMarked(clickedMines){
-    const markedMine = clickedMines.currentTag;
 
-    // const clickedMinesIndex = parseInt(clickedMines.getAttribute('minesIndex'));
-    generateRandomMines(parseInt(numberOfMines.value));
-    console.log(11212);
-    if(!markedIndex){
-        console.log(clickedMines)
-        markedMine.style.backgroundColor = "green";
-        
-    }else{
-        return;
-    }
-
-}
 
 // This function selects which game mode to run (depending on the "gameMode" variable)
 function gameModeFunc(){
