@@ -5,12 +5,12 @@ let gameActive = false,
     minesBox;
 
 let minesField = document.querySelector('.mines-field'),
-    numberOfMines = document.querySelector('.mines-input-value');
+    numberOfMines = parseInt(document.querySelector('.mines-input-value').value);
 
 let controlAuto = document.querySelector('.control-auto'),
     controlManual = document.querySelector('.control-manual');
 
-let markedIndex = '';
+let markedIndex = [];
 
 let minesPos = [];
 
@@ -57,7 +57,7 @@ setInterval((() =>{
         startBtn.onclick = clickedStart;
 
         if(minesField.innerHTML == ''){
-            markedIndex = '';
+            markedIndex = [];
             generateMineBtns();
         }
     }
@@ -89,13 +89,19 @@ function  generateRandomMines(value){
 function markedHandler(clickedEvent){
     const markedMine = clickedEvent.currentTarget;
     const markedMineIndex = parseInt(markedMine.getAttribute('minesIndex'));
-    generateRandomMines(parseInt(numberOfMines.value));
-    if(!markedIndex){
 
-        markedIndex = markedMineIndex;
-        let cardFront = document.querySelectorAll('.card-front');
-        cardFront[markedIndex].style.cssText = "background-color: #3ABF17;";
+    let cardFront = document.querySelectorAll('.card-front');
 
+    if(markedIndex.includes(markedMineIndex)){
+        let indexOf = markedIndex.indexOf(markedMineIndex);
+        markedIndex.splice(indexOf, 1);
+        cardFront[markedMineIndex].style.cssText = "background-color: #fff;";
+    }
+    else if(markedIndex.length < (MAX_MINES - numberOfMines)){
+
+        markedIndex.push(markedMineIndex);
+
+        cardFront[markedMineIndex].style.cssText = "background-color: #3ABF17;";
     }
 }
 
@@ -130,17 +136,22 @@ function generateMineBtns(){
 function clickedStart(){
     let cardImg = document.querySelectorAll('.card-back img');
     let cardBack = document.querySelectorAll('.card-back');
-    if(markedIndex && startBtn.textContent == 'START'){
-        minesBox[markedIndex].style.transform = "rotateY(180deg)";
-        if(minesPos.includes(markedIndex)){
-            makeSound(loseAudio);
-    
-            cardBack[markedIndex].style.cssText = 'background-color: #E27C9E;';
-            cardImg[markedIndex].src = 'images/boom.svg';
-        }else{
-            makeSound(winAudio);
-            cardBack[markedIndex].style.cssText = 'background-color: #F69F11;';
-            cardImg[markedIndex].src = 'images/star.svg';  
+    generateRandomMines(numberOfMines);
+    console.log(markedIndex,minesPos,numberOfMines);
+    if(markedIndex.length !== 0 && startBtn.textContent == 'START'){
+
+        for(let i in markedIndex){
+            minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
+            if(minesPos.includes(markedIndex[i])){
+                makeSound(loseAudio);        
+                cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
+                cardImg[markedIndex[i]].src = 'images/boom.svg';
+                
+            }else{
+                makeSound(winAudio);
+                cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
+                cardImg[markedIndex[i]].src = 'images/star.svg';
+            }
         }
         startBtn.style.backgroundColor = '#C70C2A';
         startBtn.textContent = 'STOP';
