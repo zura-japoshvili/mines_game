@@ -1,7 +1,5 @@
 const MAX_MINES = 25;
 let gameActive = false,
-    betClicked = false,
-    isMinesExists = false,
     minesBox;
 
 let minesField = document.querySelector('.mines-field'),
@@ -42,19 +40,31 @@ setInterval((() =>{
 
 
         lossReturn = document.querySelector('.on-loss div .btn-return');
-        lossReturn.onclick = function() {onWinPlan('return')}
+        lossReturn.onclick = function() {onLossPlan('return')}
 
         lossInc = document.querySelector('.on-loss div .btn-inc');
-        lossInc.onclick = function() {onWinPlan('inc')}
+        lossInc.onclick = function() {onLossPlan('inc')}
 
         lossDec = document.querySelector('.on-loss div .btn-dec');
-        lossDec.onclick = function() {onWinPlan('dec')}
+        lossDec.onclick = function() {onLossPlan('dec')}
 
 
         autoRand = document.querySelector('.auto-rand');
         clearBtn = document.querySelector('.auto-clear');
+        clearBtn.onclick = function () {
+            markedIndex = [];
+            let cardFront = document.querySelectorAll('.card-front');
+            cardFront.forEach(value => value.style.cssText = "background-color: #fff;");
+        };
         startBtn = document.querySelector('.start-btn');
-        startBtn.onclick = clickedStart;
+        startBtn.onclick = function() {
+            if(gameActive === true){
+                gameActive = false;
+            }else{
+                gameActive = true;
+            }
+            clickedStart()
+        };
 
         if(minesField.innerHTML == ''){
             markedIndex = [];
@@ -87,6 +97,8 @@ function  generateRandomMines(value){
 }
 
 function markedHandler(clickedEvent){
+
+
     const markedMine = clickedEvent.currentTarget;
     const markedMineIndex = parseInt(markedMine.getAttribute('minesIndex'));
 
@@ -99,8 +111,8 @@ function markedHandler(clickedEvent){
     }
     else if(markedIndex.length < (MAX_MINES - numberOfMines)){
 
+        makeSound(flipAudio);
         markedIndex.push(markedMineIndex);
-
         cardFront[markedMineIndex].style.cssText = "background-color: #3ABF17;";
     }
 }
@@ -133,36 +145,94 @@ function generateMineBtns(){
     minesBox.forEach(index => index.disabled = false);
 }
 
-function clickedStart(){
-    let cardImg = document.querySelectorAll('.card-back img');
-    let cardBack = document.querySelectorAll('.card-back');
-    generateRandomMines(numberOfMines);
-    console.log(markedIndex,minesPos,numberOfMines);
-    if(markedIndex.length !== 0 && startBtn.textContent == 'START'){
-
-        for(let i in markedIndex){
-            minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
-            if(minesPos.includes(markedIndex[i])){
-                makeSound(loseAudio);        
-                cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
-                cardImg[markedIndex[i]].src = 'images/boom.svg';
-                
-            }else{
-                makeSound(winAudio);
-                cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
-                cardImg[markedIndex[i]].src = 'images/star.svg';
-            }
+function WinOrLoss(value, markedArr){
+    let cardFront = document.querySelectorAll('.card-front');
+    for(let i in markedArr){
+        cardFront[markedArr[i]].style.cssText = "background-color: #3ABF17;";
+    }
+    if(value === 'win'){
+        winAudio.play();
+        if(onWinVar === 'return'){
+            gameActive = false;
         }
+    }else{
+        loseAudio.play();
+        if(onLossPlan === 'return'){
+            gameActive = false;
+        }
+    }
+    setTimeout(() =>{
+        clickedStart();
+    }, 3000);
+}
+
+
+function clickedStart(){
+    minesPos = [];
+
+    if(gameActive === false){
+        markedIndex = [];
+        startBtn.style.backgroundColor = '#3a9762';
+        startBtn.textContent = 'START';
+    }
+    if(markedIndex.length !== 0){
+        gameActive = true;
+
+        generateMineBtns();
+        
+        let cardImg = document.querySelectorAll('.card-back img');
+        let cardBack = document.querySelectorAll('.card-back');
+        
         startBtn.style.backgroundColor = '#C70C2A';
         startBtn.textContent = 'STOP';
+            for(let i in markedIndex){
+                minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
+                if(minesPos.includes(markedIndex[i])){     
+                    cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
+                    cardImg[markedIndex[i]].src = 'images/boom.svg';
+                    
+                }else{
+                    cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
+                    cardImg[markedIndex[i]].src = 'images/star.svg';
+                    if(minesPos.includes(markedIndex)){
+                        WinOrLoss('loss', markedIndex);
+                    }else{
+                        WinOrLoss('win', markedIndex);
+                    }
+                }
+            }
     }
-    if(startBtn.textContent == 'STOP'){
-        
-    }
-} 
+}
 function onWinPlan(value){
     onWinVar = value;
+    winDec.classList.remove('btn-marked');
+    winInc.classList.remove('btn-marked');
+    winReturn.classList.remove('btn-marked');
+
+    if(value == 'inc'){
+        winInc.classList.add('btn-marked');
+    }
+    if(value == 'dec'){
+        winDec.classList.add('btn-marked');
+    }
+    if(value == 'return'){
+        winReturn.classList.add('btn-marked');
+    }
 }
 function onLossPlan(value){
     onLossVar = value;
+    onWinVar = value;
+    lossDec.classList.remove('btn-marked');
+    lossInc.classList.remove('btn-marked');
+    lossReturn.classList.remove('btn-marked');
+
+    if(value == 'inc'){
+        lossInc.classList.add('btn-marked');
+    }
+    if(value == 'dec'){
+        lossDec.classList.add('btn-marked');
+    }
+    if(value == 'return'){
+        lossReturn.classList.add('btn-marked');
+    }
 }

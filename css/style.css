@@ -119,6 +119,7 @@ input::-webkit-inner-spin-button {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+
 }
 .buttons-duo button{
     width: 48%;
@@ -128,6 +129,7 @@ input::-webkit-inner-spin-button {
     color: #ffffff;
     border: 1px solid #ffffff;
     border-radius: 8px;
+    cursor: pointer;
 }
 .start-btn{
     color: #2e4c03;

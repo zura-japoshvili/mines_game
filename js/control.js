@@ -39,7 +39,7 @@ const autoContent = `
 <h4>Select tiles and press Start</h4>
 <div class="buttons-duo">
 <button class="auto-rand">RANDOM</button>
-<button class="auto-clear">CLEAR</button>
+<button class="auto-clear" disabled>CLEAR</button>
 </div>
 <button class="start-btn">START</button>`;
 
