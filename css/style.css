@@ -301,6 +301,8 @@ input::-webkit-inner-spin-button {
     top: -30px;
     color: #ffffff;
     display: none;
+    font-size: 14px;
+    margin-top: 5px;
 }
 .next-win-amount{
     position: absolute;
@@ -310,6 +312,8 @@ input::-webkit-inner-spin-button {
     padding: 3px 15px;
     border-radius: 12px;
     display: none;
+    font-size: 14px;
+    margin-top: 5px;
 }
 .mines-box{
     width: 80px;

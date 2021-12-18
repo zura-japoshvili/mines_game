@@ -1,5 +1,6 @@
 let minesField = document.querySelector('.mines-field'),
     numberOfMines = document.querySelector('.mines-input-value'),
+    inputAmount = parseFloat(document.querySelector('.amount-input').value),
     controlAuto = document.querySelector('.control-auto'),
     controlManual = document.querySelector('.control-manual');
 
@@ -26,11 +27,13 @@ setInterval((() =>{
 
 
 // These variables are used for game progress    
-let currrentIndex = 0,
+let currrentIndex,
     lastIndex,
     starProgress,
     nextWinAmount,
     nextAmount;
+let indexCounter = 0;
+let amountValue = 0;
 
 // In these arrays we store the positions of clicked buttons and mines
 let minesPos = [];
@@ -68,6 +71,7 @@ function makeDisabled(){
 }
 
 function restartGame(){
+    indexCounter = 0
     minesPos = [];
     usedMinesIndex = [];
     controlManual.disabled = false;
@@ -122,20 +126,39 @@ function generateMineBtns(){
 
         usedMinesIndex.push(0);
     }
-    
     // 
     minesField.innerHTML = content;
+
+    starProgress = document.querySelector('.star-progress');
+    nextWinAmount = document.querySelector('.next-win-amount');
+    currrentIndex = document.querySelector('.current-index');
+    lastIndex = document.querySelector('.last-index');
+    nextAmount = document.querySelector('.next-amount');
+
+
+
     minesBox = document.querySelectorAll(".mines-box");
     minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
+}
+
+function checkProgress(){
+    indexCounter ++;
+
+    starProgress.style.display = 'block';
+    nextWinAmount.style.display = 'block';
+
+    currrentIndex.textContent = indexCounter;
+    lastIndex.textContent = MAX_MINES - parseInt(numberOfMines.value);
+    nextAmount.textContent = `${(amountValue += (inputAmount * (parseInt(numberOfMines.value) / 100))).toFixed(2)}`;
+    makeSound(flipAudio);
 }
 
 // This function checks whether there is a mine on the clicked "minesBox"
 // It also adds pictures, rotates the container and makes a sound, 
 // it all depends on whether the given position is mine.
 function checkMines(index){
-    let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
-    betBtn.textContent = `CASHOUT ${currentAmount}$`;
+    betBtn.textContent = `CASHOUT ${amountValue.toFixed(2)}$`;
     betClicked = true;
 
     let cardImg = document.querySelectorAll('.card-back img');
@@ -172,14 +195,13 @@ function checkMines(index){
         }
         return;
     }else{
-        makeSound(flipAudio);
         cardBack[index].style.cssText = 'background-color: #F69F11;';
         cardImg[index].src = 'images/star.svg';  
+        checkProgress();
     }
 }
 
 function clickMinesHandler(clickedEvent){
-    let currentAmount = parseFloat(document.querySelector(".amount-input").value);
     betBtn.style.backgroundColor = '#FA911B';
     const clickedMine = clickedEvent.currentTarget; 
     const clickedMinesIndex = parseInt(clickedMine.getAttribute('minesIndex'));
@@ -194,11 +216,13 @@ function clickMinesHandler(clickedEvent){
 
 function betFunc (){
     if(!betClicked){
+        amountValue = inputAmount;
         makeSound(flipAudio);
         gameActive = true;
 
         makeDisabled();
         generateRandomMines(parseInt(numberOfMines.value));
+
     }else{
         if(!gameActive){
             makeDisabled();
