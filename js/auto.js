@@ -3,7 +3,7 @@ let gameActive = false,
     minesBox;
 
 let minesField = document.querySelector('.mines-field'),
-    numberOfMines = parseInt(document.querySelector('.mines-input-value').value);
+    numberOfMines; 
 
 let controlAuto = document.querySelector('.control-auto'),
     controlManual = document.querySelector('.control-manual');
@@ -85,7 +85,7 @@ function makeSound(audio) {
 
 // This function adds random numbers to the array("minesPos") used to position the mine
 function  generateRandomMines(value){
-    for(let i = 0;i <value; i++){
+    for(let i = 0;i < value; i++){
         const random = Math.floor(Math.random() * MAX_MINES);
         if(minesPos.includes(random)){
             i--;
@@ -97,8 +97,6 @@ function  generateRandomMines(value){
 }
 
 function markedHandler(clickedEvent){
-
-
     const markedMine = clickedEvent.currentTarget;
     const markedMineIndex = parseInt(markedMine.getAttribute('minesIndex'));
 
@@ -143,6 +141,9 @@ function generateMineBtns(){
 
     minesBox.forEach(value => value.addEventListener('click',markedHandler));
     minesBox.forEach(index => index.disabled = false);
+
+    numberOfMines = parseInt(document.querySelector('.mines-input-value').value);
+    generateRandomMines(numberOfMines);
 }
 
 function WinOrLoss(value, markedArr){
@@ -162,6 +163,7 @@ function WinOrLoss(value, markedArr){
         }
     }
     setTimeout(() =>{
+        generateMineBtns();
         clickedStart();
     }, 3000);
 }
@@ -177,8 +179,7 @@ function clickedStart(){
     }
     if(markedIndex.length !== 0){
         gameActive = true;
-        generateMineBtns();
-        
+
         setTimeout(() =>{
             let cardImg = document.querySelectorAll('.card-back img');
             let cardBack = document.querySelectorAll('.card-back');
@@ -218,6 +219,7 @@ function onWinPlan(value){
     }
     if(value == 'return'){
         winReturn.classList.add('btn-marked');
+        markedIndex = '';
     }
 }
 function onLossPlan(value){
@@ -235,5 +237,6 @@ function onLossPlan(value){
     }
     if(value == 'return'){
         lossReturn.classList.add('btn-marked');
+        markedIndex = '';
     }
 }
