@@ -140,7 +140,7 @@ function generateMineBtns(){
     minesBox = document.querySelectorAll(".mines-box");
     minesBox.forEach(value => value.addEventListener('click', clickMinesHandler));
 }
-
+// Through this function the player sees progress.
 function checkProgress(){
     indexCounter ++;
 
@@ -201,7 +201,8 @@ function checkMines(index){
         checkProgress();
     }
 }
-
+// This feature is responsible for pressing the button of each mine, 
+// if the button is already used it does not allow us to press it again.
 function clickMinesHandler(clickedEvent){
     betBtn.style.backgroundColor = '#FA911B';
     const clickedMine = clickedEvent.currentTarget; 
@@ -214,7 +215,8 @@ function clickMinesHandler(clickedEvent){
         checkMines(clickedMinesIndex);
     }  
 }
-
+// This function is rotated by pressing a button 
+// if the game is not started starts the game if the game is started completes the game.
 function betFunc (){
     if(!betClicked){
         amountValue = inputAmount = parseFloat(document.querySelector('.amount-input').value);

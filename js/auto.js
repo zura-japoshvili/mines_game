@@ -103,7 +103,8 @@ function  generateRandomMines(value){
         }
     }
 }
-
+// With this function we mark the clicked mine button or if we press the button again the mark will be deleted
+// It also shows progress and possible profit margin
 function markedHandler(clickedEvent){
     const markedMine = clickedEvent.currentTarget;
     const markedMineIndex = parseInt(markedMine.getAttribute('minesIndex'));
@@ -195,7 +196,7 @@ function WinOrLoss(value, markedArr){
     }, 2000);
 }
 
-
+//
 function clickedStart(){
     console.log('dawyebulia', gameActive)
     minesPos = [];
@@ -236,6 +237,8 @@ function clickedStart(){
         }
     },500); 
 }
+
+
 function onWinPlan(value){
     onWinVar = value;
     winDec.classList.remove('btn-marked');
