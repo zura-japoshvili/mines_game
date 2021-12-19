@@ -158,7 +158,6 @@ function checkProgress(){
 // it all depends on whether the given position is mine.
 function checkMines(index){
     betBtn.style.backgroundColor = '#FA911B';
-    betBtn.textContent = `CASHOUT ${amountValue.toFixed(2)}$`;
     betClicked = true;
 
     let cardImg = document.querySelectorAll('.card-back img');
@@ -195,6 +194,8 @@ function checkMines(index){
         }
         return;
     }else{
+        amountValue += inputAmount * (parseInt(numberOfMines.value) / 100);
+        betBtn.textContent = `CASHOUT ${amountValue.toFixed(2)}$`;
         cardBack[index].style.cssText = 'background-color: #F69F11;';
         cardImg[index].src = 'images/star.svg';  
         checkProgress();

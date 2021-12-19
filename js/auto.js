@@ -70,6 +70,7 @@ setInterval((() =>{
             }else{
                 gameActive = true;
             }
+            console.log('gashvebulia', gameActive)
             clickedStart()
         };
 
@@ -110,6 +111,8 @@ function markedHandler(clickedEvent){
     let cardFront = document.querySelectorAll('.card-front');
 
     if(markedIndex.includes(markedMineIndex)){
+        counterIndex --;
+
         let indexOf = markedIndex.indexOf(markedMineIndex);
         markedIndex.splice(indexOf, 1);
         cardFront[markedMineIndex].style.cssText = "background-color: #fff;";
@@ -127,7 +130,7 @@ function markedHandler(clickedEvent){
 
         currrentIndex.textContent = counterIndex;
         lastIndex.textContent = MAX_MINES - numberOfMines;
-        nextAmount.textContent = inputAmount + (counterIndex * (numberOfMines / 100)).toFixed(2);
+        nextAmount.textContent = (inputAmount + (counterIndex * (numberOfMines / 100))).toFixed(2);
     }
 }
 
@@ -163,73 +166,75 @@ function generateMineBtns(){
     minesBox.forEach(value => value.addEventListener('click',markedHandler));
     minesBox.forEach(index => index.disabled = false);
 
-    inputAmount = parseFloat(document.querySelector('.amount-input').value);
+    inputAmount = parseFloat(document.querySelector('.amount-input').value * 2);
     numberOfMines = parseInt(document.querySelector('.mines-input-value').value);
     generateRandomMines(numberOfMines);
 }
 
 function WinOrLoss(value, markedArr){
+    console.log(value, onLossVar, onWinVar);
     let cardFront = document.querySelectorAll('.card-front');
     for(let i in markedArr){
         cardFront[markedArr[i]].style.cssText = "background-color: #3ABF17;";
     }
     if(value === 'win'){
         winAudio.play();
-        if(onWinVar === 'return'){
+        if(onWinVar == 'return' || onWinVar == 'inc' || onWinVar == 'dec'){
             gameActive = false;
         }
     }else{
         loseAudio.play();
-        if(onLossPlan === 'return'){
+        if(onLossVar == 'return' || onLossVar == 'inc' || onlVar == 'dec'){
             gameActive = false;
         }
     }
+    console.log(gameActive);
     setTimeout(() =>{
         generateMineBtns();
         clickedStart();
-    }, 3000);
+    }, 2000);
 }
 
 
 function clickedStart(){
+    console.log('dawyebulia', gameActive)
     minesPos = [];
-
     if(gameActive === false){
         counterIndex = 0;
         markedIndex = [];
         startBtn.style.backgroundColor = '#3a9762';
         startBtn.textContent = 'START';
     }
-    if(markedIndex.length !== 0){
-        gameActive = true;
-
-        setTimeout(() =>{
-            let cardImg = document.querySelectorAll('.card-back img');
-            let cardBack = document.querySelectorAll('.card-back');
-    
-            startBtn.style.backgroundColor = '#C70C2A';
-            startBtn.textContent = 'STOP';
-                
+    setTimeout(() =>{
+        if(markedIndex.length !== 0){
+            let winTheGame = true;
+            gameActive = true;
+            generateRandomMines(numberOfMines);
+            
+                let cardImg = document.querySelectorAll('.card-back img');
+                let cardBack = document.querySelectorAll('.card-back');
+        
+                startBtn.style.backgroundColor = '#C70C2A';
+                startBtn.textContent = 'STOP'; 
                 for(let i in markedIndex){
-                    console.log(markedIndex);
-                    console.log(i);
                     minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
                     if(minesPos.includes(markedIndex[i])){     
                         cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
                         cardImg[markedIndex[i]].src = 'images/boom.svg';
-                        
+                        winTheGame = false;
                     }else{
                         cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
                         cardImg[markedIndex[i]].src = 'images/star.svg';
-                        if(minesPos.includes(markedIndex)){
-                            WinOrLoss('loss', markedIndex);
-                        }else{
-                            WinOrLoss('win', markedIndex);
-                        }
                     }
                 }
-        },200);
-    }
+                if(winTheGame === true){
+                    WinOrLoss('win', markedIndex);
+                }else{
+                    WinOrLoss('loss', markedIndex);
+                }
+            
+        }
+    },500); 
 }
 function onWinPlan(value){
     onWinVar = value;
