@@ -115,6 +115,8 @@ function markedHandler(clickedEvent){
         cardFront[markedMineIndex].style.cssText = "background-color: #fff;";
     }
     else if(markedIndex.length < (MAX_MINES - numberOfMines)){
+        startBtn.style.cssText = 'background-color:#4BC411;';
+
         starProgress.style.display = 'block';
         nextWinAmount.style.display = 'block';
 
