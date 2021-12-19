@@ -1,6 +1,6 @@
 let minesField = document.querySelector('.mines-field'),
     numberOfMines = document.querySelector('.mines-input-value'),
-    inputAmount = parseFloat(document.querySelector('.amount-input').value),
+    inputAmount,
     controlAuto = document.querySelector('.control-auto'),
     controlManual = document.querySelector('.control-manual');
 
@@ -216,7 +216,7 @@ function clickMinesHandler(clickedEvent){
 
 function betFunc (){
     if(!betClicked){
-        amountValue = inputAmount;
+        amountValue = inputAmount = parseFloat(document.querySelector('.amount-input').value);
         makeSound(flipAudio);
         gameActive = true;
 

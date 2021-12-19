@@ -177,30 +177,31 @@ function clickedStart(){
     }
     if(markedIndex.length !== 0){
         gameActive = true;
-
         generateMineBtns();
         
-        let cardImg = document.querySelectorAll('.card-back img');
-        let cardBack = document.querySelectorAll('.card-back');
-        
-        startBtn.style.backgroundColor = '#C70C2A';
-        startBtn.textContent = 'STOP';
-            for(let i in markedIndex){
-                minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
-                if(minesPos.includes(markedIndex[i])){     
-                    cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
-                    cardImg[markedIndex[i]].src = 'images/boom.svg';
-                    
-                }else{
-                    cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
-                    cardImg[markedIndex[i]].src = 'images/star.svg';
-                    if(minesPos.includes(markedIndex)){
-                        WinOrLoss('loss', markedIndex);
+        setTimeout(() =>{
+            let cardImg = document.querySelectorAll('.card-back img');
+            let cardBack = document.querySelectorAll('.card-back');
+    
+            startBtn.style.backgroundColor = '#C70C2A';
+            startBtn.textContent = 'STOP';
+                for(let i in markedIndex){
+                    minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
+                    if(minesPos.includes(markedIndex[i])){     
+                        cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
+                        cardImg[markedIndex[i]].src = 'images/boom.svg';
+                        
                     }else{
-                        WinOrLoss('win', markedIndex);
+                        cardBack[markedIndex[i]].style.cssText = 'background-color: #F69F11;';
+                        cardImg[markedIndex[i]].src = 'images/star.svg';
+                        if(minesPos.includes(markedIndex)){
+                            WinOrLoss('loss', markedIndex);
+                        }else{
+                            WinOrLoss('win', markedIndex);
+                        }
                     }
                 }
-            }
+        },200);
     }
 }
 function onWinPlan(value){
