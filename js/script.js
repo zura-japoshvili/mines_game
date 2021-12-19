@@ -9,9 +9,6 @@ let minesField = document.querySelector('.mines-field');
 let controlManual = document.querySelector('.control-manual'),
     controlAuto = document.querySelector('.control-auto');
     
-
-
-
 window.addEventListener('onload', gameModeFunc());
 
 // This function selects which game mode to run (depending on the "gameMode" variable)

@@ -3,14 +3,20 @@ let gameActive = false,
     minesBox;
 
 let minesField = document.querySelector('.mines-field'),
-    numberOfMines; 
+    numberOfMines,
+    inputAmount; 
 
 let controlAuto = document.querySelector('.control-auto'),
     controlManual = document.querySelector('.control-manual');
 
 let markedIndex = [];
-
 let minesPos = [];
+
+let currrentIndex,
+    lastIndex,
+    starProgress,
+    nextWinAmount,
+    nextAmount;
 
 // These variables are used for auto game mode.
 let winReturn,
@@ -23,6 +29,7 @@ let winReturn,
     clearBtn,
     startBtn;
 
+let counterIndex = 0;
 let onWinVar = 'return';
 let onLossVar = 'return';
 
@@ -108,10 +115,17 @@ function markedHandler(clickedEvent){
         cardFront[markedMineIndex].style.cssText = "background-color: #fff;";
     }
     else if(markedIndex.length < (MAX_MINES - numberOfMines)){
+        starProgress.style.display = 'block';
+        nextWinAmount.style.display = 'block';
 
+        counterIndex ++;
         makeSound(flipAudio);
         markedIndex.push(markedMineIndex);
         cardFront[markedMineIndex].style.cssText = "background-color: #3ABF17;";
+
+        currrentIndex.textContent = counterIndex;
+        lastIndex.textContent = MAX_MINES - numberOfMines;
+        nextAmount.textContent = inputAmount + (counterIndex * (numberOfMines / 100)).toFixed(2);
     }
 }
 
@@ -131,10 +145,15 @@ function generateMineBtns(){
                     </div>
                 </button>`;
     }
-    
     // 
     minesField.innerHTML = content;
     minesBox = document.querySelectorAll(".mines-box");
+
+    starProgress = document.querySelector('.star-progress');
+    nextWinAmount = document.querySelector('.next-win-amount');
+    currrentIndex = document.querySelector('.current-index');
+    lastIndex = document.querySelector('.last-index');
+    nextAmount = document.querySelector('.next-amount');
 
     let frontCard = document.querySelectorAll('.card-front');
     frontCard.forEach(index => index.style.cssText = 'background-color: #fff;');
@@ -142,6 +161,7 @@ function generateMineBtns(){
     minesBox.forEach(value => value.addEventListener('click',markedHandler));
     minesBox.forEach(index => index.disabled = false);
 
+    inputAmount = parseFloat(document.querySelector('.amount-input').value);
     numberOfMines = parseInt(document.querySelector('.mines-input-value').value);
     generateRandomMines(numberOfMines);
 }
@@ -173,6 +193,7 @@ function clickedStart(){
     minesPos = [];
 
     if(gameActive === false){
+        counterIndex = 0;
         markedIndex = [];
         startBtn.style.backgroundColor = '#3a9762';
         startBtn.textContent = 'START';
@@ -186,7 +207,10 @@ function clickedStart(){
     
             startBtn.style.backgroundColor = '#C70C2A';
             startBtn.textContent = 'STOP';
+                
                 for(let i in markedIndex){
+                    console.log(markedIndex);
+                    console.log(i);
                     minesBox[markedIndex[i]].style.transform = "rotateY(180deg)";
                     if(minesPos.includes(markedIndex[i])){     
                         cardBack[markedIndex[i]].style.cssText = 'background-color: #E27C9E;';
@@ -219,7 +243,6 @@ function onWinPlan(value){
     }
     if(value == 'return'){
         winReturn.classList.add('btn-marked');
-        markedIndex = '';
     }
 }
 function onLossPlan(value){
@@ -237,6 +260,6 @@ function onLossPlan(value){
     }
     if(value == 'return'){
         lossReturn.classList.add('btn-marked');
-        markedIndex = '';
+
     }
 }
